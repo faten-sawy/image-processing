@@ -1,10 +1,10 @@
 import sharp from "sharp";
 
 const resize = async (
-    imgName:any,
+    imgName:string,
     imgWidth:number,
     imgHeight:number,
-    outImg:any
+    outImg?:any
 ):Promise<string>=>{
     if(!isNaN(imgWidth) && !isNaN(imgHeight)){
         await sharp(imgName).resize(imgHeight,imgWidth).toFile(outImg)
