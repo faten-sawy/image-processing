@@ -1,19 +1,19 @@
-import sharp from "sharp";
-
+import sharp from 'sharp';
 const resize = async (
-    imgName:string,
-    imgWidth:number,
-    imgHeight:number,
-    outImg?:any
-):Promise<string>=>{
-    if(!isNaN(imgWidth) && !isNaN(imgHeight)){
-        await sharp(imgName).resize(imgHeight,imgWidth).toFile(outImg)
-    }
-    else{
-        console.log("return valid height and width")
-    }
-     
-     return outImg
-}
+  imgName: string,
+  imgWidth: number,
+  imgHeight: number,
+  imgOut?: any
+): Promise<string> => {
+  if (!isNaN(imgWidth) && !isNaN(imgHeight)) {
+    await sharp(imgName)
+      .resize(imgHeight, imgWidth)
+      .toFile(imgOut);
+  } else {
+    console.log('return valid height and width');
+  }
 
-export default resize
+  return imgOut 
+};
+
+export default resize;

@@ -9,9 +9,9 @@
     "start": "nodemon src/index.ts",
     "jasmine": "jasmine",
     "formatter": "npm run prettier && npm run lint",
-    "lint": "eslint --config .eslintrc 'src/**/*.ts'",
-    "lint-and-fix": "eslint --config .eslintrc 'src/**/*.ts' --fix",
-    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "prettier": "prettier --write src/**/*.ts "
   },
   "keywords": [],
   "author": "",
