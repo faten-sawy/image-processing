@@ -1,21 +1,7 @@
 import { Request, Response } from 'express';
 import resize from '../helper/sharp';
 import path from 'path';
-import { promises as fsPromise } from 'fs';
-
 import fs from 'fs';
-
-/* const cache = new NodeCache({stdTTL:})
- */ const checkImgExists = async (imgPath: string): Promise<boolean> => {
-  try {
-    const file = await fsPromise.open(imgPath, 'r');
-    file.close();
-
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const resizeImageController = async (req: Request, res: Response) => {
   const { imgName, imgWidth, imgHeight } = req.query;
@@ -24,37 +10,32 @@ export const resizeImageController = async (req: Request, res: Response) => {
     __dirname,
     `../../Images/thumb/${imgName}-${imgWidth}-${imgHeight}.jpg`
   );
-
-  const existingFlag = await checkImgExists(imgPath);
-
-  if (existingFlag) {
-    const heightCheck = isNaN(Number(imgHeight));
-    const widthCheck = isNaN(Number(imgWidth));
+  const heightCheck = isNaN(Number(imgHeight));
+  const widthCheck = isNaN(Number(imgWidth));
+  if (
+    !heightCheck &&
+    !widthCheck &&
+    Number(imgWidth) > 0 &&
+    Number(imgHeight) > 0
+  ) {
     if (
-      !heightCheck &&
-      !widthCheck &&
-      Number(imgWidth) > 0 &&
-      Number(imgHeight) > 0
+      fs.existsSync(
+        `Images/thumb/${imgName}-${Number(imgWidth)}-${Number(imgHeight)}.jpg`
+      )
     ) {
-      if (
-        fs.existsSync(
-          `Images/thumb/${imgName}-${Number(imgWidth)}-${Number(imgHeight)}.jpg`
-        )
-      ) {
-        res.sendFile(
-          path.resolve(`Images/thumb/${imgName}-${imgWidth}-${imgHeight}.jpg`)
-        );
-      } else {
-        const outImage = await resize(
-          imgPath,
-          Number(imgWidth),
-          Number(imgHeight),
-          outImgPath
-        );
-        res.status(200).sendFile(outImage);
-      }
+      res.sendFile(
+        path.resolve(`Images/thumb/${imgName}-${imgWidth}-${imgHeight}.jpg`)
+      );
     } else {
-      res.status(404).json('Height and width must be valid numbers and > 0');
+      const outImage = await resize(
+        imgPath,
+        Number(imgWidth),
+        Number(imgHeight),
+        outImgPath
+      );
+      res.status(200).sendFile(outImage);
     }
+  } else {
+    res.status(404).json('Height and width must be valid numbers and > 0');
   }
 };

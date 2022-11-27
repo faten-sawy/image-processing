@@ -1,15 +1,16 @@
 import express from 'express';
 
 import { resizeImageController } from './controllers/resizeImage.controller';
-/* import apicache from 'apicache'
- */
 
-import { validateParametersMiddleware } from './middlewares/custom.middleware';
+import {
+  validateParametersMiddleware,
+  checkExistingImage
+} from './middlewares/custom.middleware';
 
 const app = express();
 const port = 4000;
-
-app.get('/images/', validateParametersMiddleware, resizeImageController);
+const Middlewares = [validateParametersMiddleware, checkExistingImage];
+app.get('/images/', Middlewares, resizeImageController);
 
 app.listen(port, () => {
   console.log(`hello form ${port}`);
