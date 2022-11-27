@@ -3,17 +3,15 @@ const resize = async (
   imgName: string,
   imgWidth: number,
   imgHeight: number,
-  imgOut?: any
+  imgOut: string
 ): Promise<string> => {
   if (!isNaN(imgWidth) && !isNaN(imgHeight)) {
-    await sharp(imgName)
-      .resize(imgHeight, imgWidth)
-      .toFile(imgOut);
+    await sharp(imgName).resize(imgHeight, imgWidth).toFile(imgOut);
   } else {
     console.log('return valid height and width');
   }
-
-  return imgOut 
+  console.log(imgOut);
+  return imgOut;
 };
 
 export default resize;

@@ -18,7 +18,7 @@ export const validateParametersMiddleware = (
 ) => {
   const { imgName, imgWidth, imgHeight } = req.query;
 
-  const imgPath = path.join(__dirname, `../../Images/${imgName}`);
+  const imgPath = path.join(__dirname, `../../Images/${imgName}.jpg`);
 
   const existingFlag = checkImgExists(imgPath);
 
@@ -31,7 +31,5 @@ export const validateParametersMiddleware = (
   } else if (!imgHeight) {
     res.send('Image height is Rquired');
   }
-
-  console.log(imgHeight, imgName, imgWidth);
   next();
 };

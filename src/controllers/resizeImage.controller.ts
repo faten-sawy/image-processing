@@ -19,8 +19,11 @@ import fs from 'fs';
 
 export const resizeImageController = async (req: Request, res: Response) => {
   const { imgName, imgWidth, imgHeight } = req.query;
-  const imgPath = path.join(__dirname, `../../Images/${imgName}`);
-  const outImgPath = path.join(__dirname, `../../Images/thumb/${imgName}`);
+  const imgPath = path.join(__dirname, `../../Images/${imgName}.jpg`);
+  const outImgPath = path.join(
+    __dirname,
+    `../../Images/thumb/${imgName}-${imgWidth}-${imgHeight}.jpg`
+  );
 
   const existingFlag = await checkImgExists(imgPath);
 
@@ -33,8 +36,14 @@ export const resizeImageController = async (req: Request, res: Response) => {
       Number(imgWidth) > 0 &&
       Number(imgHeight) > 0
     ) {
-      if (fs.existsSync(`images/thumb/${imgName}`)) {
-        res.sendFile(path.resolve(`./images/thumb/${imgName}`));
+      if (
+        fs.existsSync(
+          `Images/thumb/${imgName}-${Number(imgWidth)}-${Number(imgHeight)}.jpg`
+        )
+      ) {
+        res.sendFile(
+          path.resolve(`Images/thumb/${imgName}-${imgWidth}-${imgHeight}.jpg`)
+        );
       } else {
         const outImage = await resize(
           imgPath,
